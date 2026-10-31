@@ -1,0 +1,23 @@
+name: mirror
+
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Xpdf version, empty for the Homebrew xpdf formula version
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: ./mirror.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ inputs.version }}
